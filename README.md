@@ -22,4 +22,4 @@ Cервис Mesto: интерактивная страница, куда мож�
 
 ---
 
-[Ссылка ведущая на сайт](https://nadyadikova.github.io/react-mesto-auth/)
+[Ссылка ведущая на сайт](https://nadyadikova.github.io/react-mesto-auth/index.html)
