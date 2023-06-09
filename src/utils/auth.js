@@ -26,10 +26,7 @@ const makeRequest = (url, method, body, token) => {
 };
 
 export function authorize(email, password) {
-  return makeRequest("/signin", "POST", {
-    password: `${password}`,
-    email: `${email}`,
-  });
+  return makeRequest("/signin", "POST", { email, password });
 }
 
 export function register(email, password) {

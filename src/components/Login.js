@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Login({ loginUser }) {
-  const [setFormValue, formValue] = React.useState({
+  const [formValue, setFormValue] = React.useState({
     email: "",
     password: "",
   });

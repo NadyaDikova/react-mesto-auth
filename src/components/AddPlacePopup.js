@@ -12,10 +12,7 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onAddPlace({
-      name: name,
-      link: link,
-    });
+    onAddPlace({ name, link });
   }
 
   function handleNameChange(e) {

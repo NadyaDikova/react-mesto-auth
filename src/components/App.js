@@ -29,10 +29,10 @@ export default function App() {
   const [cards, setCards] = React.useState([]);
 
   const navigate = useNavigate();
-  const [userData, setUserData] = React.useState({ email: "" });
+  const [email, setEmail] = React.useState("email");
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isInfoToolTip, setInfoToolTip] = React.useState(false);
-  const [status, setStatus] = React.useState(false);
+  const [isSuccessInfoTooltipStatus, setStatus] = React.useState(false);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -66,7 +66,7 @@ export default function App() {
         .then((res) => {
           if (res) {
             const data = res.data;
-            setUserData({ email: data.email });
+            setEmail({ email: data.email });
             setIsLoggedIn(true);
             navigate("/");
           }
@@ -75,18 +75,20 @@ export default function App() {
           console.log(err);
         });
     }
-  }, [navigate, isLoggedIn]);
+  });
 
   React.useEffect(() => {
-    Promise.all([api.getUser(), api.getInitialCards()])
-      .then(([data, item]) => {
-        setCurrentUser(data);
-        setCards(item);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (isLoggedIn) {
+      Promise.all([api.getUser(), api.getInitialCards()])
+        .then(([data, item]) => {
+          setCurrentUser(data);
+          setCards(item);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isLoggedIn]);
 
   function registerUser({ email, password }) {
     auth
@@ -108,7 +110,7 @@ export default function App() {
       .authorize(email, password)
       .then((res) => {
         localStorage.setItem("jwt", res.token);
-        setUserData(email);
+        setEmail(email);
         setIsLoggedIn(true);
       })
       .catch((err) => {
@@ -121,7 +123,7 @@ export default function App() {
   function logOut() {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
-    setUserData({
+    setEmail({
       email: "",
       password: "",
     });
@@ -182,11 +184,7 @@ export default function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header
-          isLoggedIn={isLoggedIn}
-          email={userData.email}
-          logOut={logOut}
-        />
+        <Header isLoggedIn={isLoggedIn} email={email.email} logOut={logOut} />
 
         <Routes>
           <Route
@@ -243,7 +241,7 @@ export default function App() {
         <InfoTooltip
           isOpen={isInfoToolTip}
           onClose={closeAllPopups}
-          status={status}
+          status={isSuccessInfoTooltipStatus}
         />
       </div>
     </CurrentUserContext.Provider>
