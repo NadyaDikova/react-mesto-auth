@@ -32,7 +32,8 @@ export default function App() {
   const [email, setEmail] = React.useState("email");
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isInfoToolTip, setInfoToolTip] = React.useState(false);
-  const [isSuccessInfoTooltipStatus, setStatus] = React.useState(false);
+  const [isSuccessInfoTooltipStatus, setIsSuccessInfoTooltipStatus] =
+    React.useState(false);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -66,7 +67,7 @@ export default function App() {
         .then((res) => {
           if (res) {
             const data = res.data;
-            setEmail({ email: data.email });
+            setEmail(data.email);
             setIsLoggedIn(true);
             navigate("/");
           }
@@ -75,7 +76,7 @@ export default function App() {
           console.log(err);
         });
     }
-  });
+  }, []);
 
   React.useEffect(() => {
     if (isLoggedIn) {
@@ -94,12 +95,12 @@ export default function App() {
     auth
       .register(email, password)
       .then(() => {
-        setStatus(true);
+        setIsSuccessInfoTooltipStatus(true);
         setInfoToolTip(true);
         navigate("/sign-in");
       })
       .catch((err) => {
-        setStatus(false);
+        setIsSuccessInfoTooltipStatus(false);
         setInfoToolTip(true);
         console.log(err);
       });
@@ -114,7 +115,7 @@ export default function App() {
         setIsLoggedIn(true);
       })
       .catch((err) => {
-        setStatus(false);
+        setIsSuccessInfoTooltipStatus(false);
         setInfoToolTip(true);
         console.log(err);
       });
@@ -123,10 +124,7 @@ export default function App() {
   function logOut() {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
-    setEmail({
-      email: "",
-      password: "",
-    });
+    setEmail("");
     navigate("/sign-in");
   }
 
