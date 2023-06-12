@@ -113,6 +113,7 @@ export default function App() {
         localStorage.setItem("jwt", res.token);
         setEmail(email);
         setIsLoggedIn(true);
+        navigate("./");
       })
       .catch((err) => {
         setIsSuccessInfoTooltipStatus(false);
@@ -182,7 +183,7 @@ export default function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header isLoggedIn={isLoggedIn} email={email.email} logOut={logOut} />
+        <Header isLoggedIn={isLoggedIn} email={email} logOut={logOut} />
 
         <Routes>
           <Route
